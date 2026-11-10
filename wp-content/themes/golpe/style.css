@@ -1,0 +1,19 @@
+/*
+Theme Name: GOLPE
+Theme URI: https://github.com/gyuhwang1989/golpe-shop
+Author: GOLPE
+Description: GOLPE(골페) 골프용품 전문 쇼핑몰을 위한 블랙 & 화이트 프리미엄 커스텀 테마입니다. WooCommerce와 함께 사용하도록 설계되었습니다.
+Version: 0.1.0
+Requires at least: 6.4
+Tested up to: 6.8
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: golpe
+Tags: e-commerce, custom-logo, custom-menu, featured-images, translation-ready
+*/
+
+/*
+ * 실제 스타일은 assets/css/main.css 와 assets/css/woocommerce.css 에 있습니다.
+ * 이 파일은 워드프레스가 테마를 인식하기 위한 정보(헤더)만 담고 있습니다.
+ */
