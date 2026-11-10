@@ -1375,3 +1375,319 @@ p {
 		scroll-behavior: auto !important;
 	}
 }
+
+/* 14. 해외구매대행 (소개 섹션 · 이용 안내 페이지 · 공통 안내 박스) -------- */
+.agency-intro {
+	border-bottom: 1px solid var(--golpe-gray-200);
+}
+
+.agency-intro__head {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(24px, 4vw, 64px);
+	align-items: end;
+	margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.agency-intro__lead {
+	margin: 0;
+	font-size: clamp(15px, 1.2vw, 17px);
+	color: var(--golpe-gray-700);
+}
+
+.agency-intro__lead .agency-guide-link {
+	margin-top: 16px;
+	color: var(--golpe-black);
+}
+
+.agency-steps {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 2px solid var(--golpe-black);
+}
+
+.agency-step {
+	position: relative;
+	padding: 28px clamp(16px, 2vw, 32px) 32px 0;
+}
+
+.agency-step + .agency-step {
+	padding-left: clamp(16px, 2vw, 32px);
+	border-left: 1px solid var(--golpe-gray-200);
+}
+
+.agency-step__num {
+	display: block;
+	font-family: var(--golpe-font-display);
+	font-size: 40px;
+	font-weight: 800;
+	line-height: 1;
+	color: transparent;
+	-webkit-text-stroke: 1px var(--golpe-black);
+	margin-bottom: 16px;
+}
+
+.agency-step__en {
+	display: block;
+	font-family: var(--golpe-font-display);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.24em;
+	color: var(--golpe-gray-500);
+	margin-bottom: 6px;
+}
+
+.agency-step__title {
+	font-size: 18px;
+	margin-bottom: 8px;
+}
+
+.agency-step__text {
+	margin: 0;
+	font-size: 14px;
+	color: var(--golpe-gray-700);
+}
+
+.agency-intro__note {
+	margin: 32px 0 0;
+	padding: 16px 20px;
+	background: var(--golpe-gray-100);
+	font-size: 13px;
+	color: var(--golpe-gray-700);
+}
+
+.footer-brand .agency-guide-link {
+	margin-top: 8px;
+	color: var(--golpe-white);
+	font-size: 13px;
+}
+
+/* 공통 안내 박스 / 조건 목록 / 표 */
+.agency-notice {
+	margin: 24px 0;
+	padding: 24px;
+	border: 1px solid var(--golpe-black);
+	background: var(--golpe-white);
+	font-size: 14px;
+}
+
+.agency-notice__badge {
+	display: inline-block;
+	margin: 0 0 16px;
+	padding: 4px 10px;
+	background: var(--golpe-black);
+	color: var(--golpe-white);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+}
+
+.agency-terms {
+	margin: 0 0 16px;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 8px;
+}
+
+.agency-terms__item {
+	position: relative;
+	padding-left: 16px;
+	color: var(--golpe-gray-700);
+	line-height: 1.6;
+}
+
+.agency-terms__item::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.7em;
+	width: 6px;
+	height: 1px;
+	background: var(--golpe-black);
+}
+
+.agency-terms__item--refund,
+.agency-terms__item--defect {
+	color: var(--golpe-ink);
+	font-weight: 600;
+}
+
+.agency-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0 0 16px;
+	font-size: 14px;
+}
+
+.agency-table caption {
+	text-align: left;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+.agency-table th,
+.agency-table td {
+	padding: 10px 12px;
+	border-bottom: 1px solid var(--golpe-gray-200);
+	text-align: left;
+	vertical-align: top;
+}
+
+.agency-table thead th {
+	border-bottom: 2px solid var(--golpe-black);
+	font-size: 13px;
+}
+
+.agency-table--compact th {
+	font-weight: 400;
+	color: var(--golpe-gray-700);
+}
+
+.agency-table--compact td {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.agency-table__total th,
+.agency-table__total td {
+	font-weight: 700;
+	color: var(--golpe-black);
+	border-bottom: 2px solid var(--golpe-black);
+}
+
+/* 이용 안내 페이지 */
+.agency-guide__admin {
+	padding: 12px 16px;
+	background: #fff8e6;
+	color: #7a5a00;
+}
+
+.agency-guide__intro {
+	margin-bottom: 48px;
+}
+
+.agency-guide__layout {
+	display: grid;
+	grid-template-columns: 220px 1fr;
+	gap: clamp(32px, 5vw, 80px);
+	align-items: start;
+}
+
+.agency-guide__toc {
+	position: sticky;
+	top: calc(var(--golpe-header-h) + 24px);
+}
+
+.agency-guide__toc ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 2px solid var(--golpe-black);
+	counter-reset: guide;
+}
+
+.agency-guide__toc li {
+	counter-increment: guide;
+	border-bottom: 1px solid var(--golpe-gray-200);
+}
+
+.agency-guide__toc a {
+	display: block;
+	padding: 12px 0;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.agency-guide__toc a::before {
+	content: counter(guide, decimal-leading-zero) "  ";
+	font-family: var(--golpe-font-display);
+	font-size: 11px;
+	color: var(--golpe-gray-500);
+}
+
+.agency-guide__section {
+	padding-bottom: 48px;
+	margin-bottom: 48px;
+	border-bottom: 1px solid var(--golpe-gray-200);
+	scroll-margin-top: calc(var(--golpe-header-h) + 24px);
+}
+
+.agency-guide__section:last-child {
+	border-bottom: 0;
+}
+
+.agency-guide__section h2 {
+	font-size: clamp(20px, 2vw, 26px);
+	margin-bottom: 20px;
+}
+
+.agency-guide__section ul,
+.agency-guide__section ol {
+	padding-left: 20px;
+}
+
+.agency-guide__section li {
+	margin-bottom: 8px;
+}
+
+.agency-guide__section--emphasis {
+	padding: 32px;
+	border: 2px solid var(--golpe-black);
+}
+
+.agency-guide__small {
+	font-size: 13px;
+	color: var(--golpe-gray-500);
+}
+
+@media (max-width: 1024px) {
+	.agency-intro__head {
+		grid-template-columns: 1fr;
+		align-items: start;
+	}
+
+	.agency-steps {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.agency-step:nth-child(3) {
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.agency-step:nth-child(n + 3) {
+		border-top: 1px solid var(--golpe-gray-200);
+	}
+
+	.agency-guide__layout {
+		grid-template-columns: 1fr;
+	}
+
+	.agency-guide__toc {
+		position: static;
+	}
+}
+
+@media (max-width: 640px) {
+	.agency-steps {
+		grid-template-columns: 1fr;
+	}
+
+	.agency-step,
+	.agency-step + .agency-step {
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.agency-step + .agency-step {
+		border-top: 1px solid var(--golpe-gray-200);
+	}
+
+	.agency-guide__section--emphasis {
+		padding: 20px;
+	}
+}
