@@ -1,0 +1,348 @@
+/* ==========================================================================
+   GOLPE — WooCommerce 화면 스타일
+   WooCommerce 가 활성화된 경우에만 불러옵니다.
+   WooCommerce 기본 스타일 위에 블랙 & 화이트 톤을 덮어씌우는 방식입니다.
+   ========================================================================== */
+
+.shop-container {
+	padding-top: clamp(40px, 5vw, 72px);
+	padding-bottom: var(--golpe-section);
+}
+
+.woocommerce-products-header__title.page-title {
+	font-size: clamp(28px, 3.4vw, 44px);
+	font-weight: 800;
+	margin-bottom: 24px;
+}
+
+.woocommerce .woocommerce-breadcrumb {
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	color: var(--golpe-gray-500);
+	margin-bottom: 24px;
+}
+
+/* 카테고리 바로가기 */
+.shop-category-nav {
+	width: 100%;
+	margin-bottom: 28px;
+	overflow-x: auto;
+}
+
+.shop-category-nav ul {
+	display: flex;
+	gap: 8px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.shop-category-nav a {
+	display: inline-block;
+	padding: 8px 20px;
+	border: 1px solid var(--golpe-gray-300);
+	font-size: 13px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.shop-category-nav a:hover,
+.shop-category-nav a.is-active {
+	background: var(--golpe-black);
+	border-color: var(--golpe-black);
+	color: var(--golpe-white);
+}
+
+.woocommerce .woocommerce-result-count {
+	font-size: 13px;
+	color: var(--golpe-gray-500);
+}
+
+.woocommerce .woocommerce-ordering select {
+	height: 40px;
+	padding: 0 12px;
+	border: 1px solid var(--golpe-gray-300);
+	background: var(--golpe-white);
+	font: inherit;
+	font-size: 13px;
+}
+
+/* 상품 목록 그리드 */
+.woocommerce ul.products {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 48px clamp(12px, 1.6vw, 24px);
+	margin: 0;
+	clear: both;
+}
+
+.woocommerce ul.products.columns-2 { grid-template-columns: repeat(2, 1fr); }
+.woocommerce ul.products.columns-3 { grid-template-columns: repeat(3, 1fr); }
+
+.woocommerce ul.products::before,
+.woocommerce ul.products::after {
+	display: none !important;
+}
+
+.woocommerce ul.products li.product {
+	float: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	text-align: left;
+}
+
+.woocommerce ul.products li.product a img {
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	margin-bottom: 16px;
+	background: var(--golpe-gray-100);
+	transition: opacity 0.3s var(--golpe-ease);
+}
+
+.woocommerce ul.products li.product a:hover img {
+	opacity: 0.88;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+	padding: 0;
+	margin-bottom: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.5;
+	color: var(--golpe-ink);
+}
+
+.woocommerce ul.products li.product .price {
+	color: var(--golpe-black);
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.woocommerce ul.products li.product .price del {
+	color: var(--golpe-gray-500);
+	font-weight: 400;
+	opacity: 1;
+}
+
+.woocommerce ul.products li.product .price ins {
+	text-decoration: none;
+}
+
+.woocommerce ul.products li.product .button {
+	margin-top: 12px;
+}
+
+/* 세일 배지 */
+.woocommerce span.onsale {
+	min-width: 0;
+	min-height: 0;
+	padding: 4px 10px;
+	border-radius: 0;
+	background: var(--golpe-black);
+	color: var(--golpe-white);
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 1.6;
+	letter-spacing: 0.1em;
+	top: 12px !important;
+	left: 12px !important;
+	right: auto !important;
+	margin: 0 !important;
+}
+
+/* 버튼 */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 48px;
+	padding: 0 28px;
+	border: 1px solid var(--golpe-black);
+	border-radius: 0;
+	background: var(--golpe-black);
+	color: var(--golpe-white);
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	transition: background 0.25s var(--golpe-ease), color 0.25s var(--golpe-ease);
+}
+
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
+.woocommerce input.button.alt:hover {
+	background: var(--golpe-white);
+	color: var(--golpe-black);
+}
+
+.woocommerce ul.products li.product .button {
+	min-height: 40px;
+	padding: 0 18px;
+	font-size: 13px;
+	background: var(--golpe-white);
+	color: var(--golpe-black);
+}
+
+.woocommerce ul.products li.product .button:hover {
+	background: var(--golpe-black);
+	color: var(--golpe-white);
+}
+
+/* 상품 상세 */
+.woocommerce div.product div.images,
+.woocommerce div.product div.summary {
+	margin-bottom: 64px;
+}
+
+.woocommerce div.product .product_title {
+	font-size: clamp(24px, 2.6vw, 34px);
+	font-weight: 800;
+	margin-bottom: 16px;
+}
+
+.woocommerce div.product p.price,
+.woocommerce div.product span.price {
+	color: var(--golpe-black);
+	font-size: 22px;
+	font-weight: 700;
+}
+
+.woocommerce div.product form.cart {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	padding-top: 24px;
+	border-top: 1px solid var(--golpe-gray-200);
+}
+
+.woocommerce div.product form.cart .button {
+	flex: 1;
+	min-height: 56px;
+}
+
+.woocommerce .quantity .qty {
+	width: 80px;
+	height: 56px;
+	border: 1px solid var(--golpe-gray-300);
+	font: inherit;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+	padding: 0;
+	margin-bottom: 32px;
+	border-bottom: 1px solid var(--golpe-gray-200);
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs::before {
+	display: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li {
+	border: 0;
+	border-radius: 0;
+	background: none;
+	margin: 0 24px 0 0;
+	padding: 0;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li::before,
+.woocommerce div.product .woocommerce-tabs ul.tabs li::after {
+	display: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li a {
+	padding: 14px 0;
+	font-weight: 600;
+	color: var(--golpe-gray-500);
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li.active a {
+	color: var(--golpe-black);
+	box-shadow: inset 0 -2px 0 var(--golpe-black);
+}
+
+.woocommerce .related > h2,
+.woocommerce .upsells > h2 {
+	font-size: 22px;
+	margin-bottom: 32px;
+}
+
+/* 알림 메시지 */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+	border-top-color: var(--golpe-black);
+	background: var(--golpe-gray-100);
+	color: var(--golpe-ink);
+}
+
+.woocommerce-message::before,
+.woocommerce-info::before {
+	color: var(--golpe-black);
+}
+
+/* 장바구니 · 결제 · 마이페이지 입력 */
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select {
+	min-height: 48px;
+	padding: 10px 14px;
+	border: 1px solid var(--golpe-gray-300);
+	border-radius: 0;
+	font: inherit;
+}
+
+.woocommerce table.shop_table {
+	border-radius: 0;
+	border-color: var(--golpe-gray-200);
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-top: 2px solid var(--golpe-black);
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation li a {
+	display: block;
+	padding: 14px 0;
+	border-bottom: 1px solid var(--golpe-gray-200);
+	font-weight: 600;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a {
+	color: var(--golpe-black);
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+	.woocommerce ul.products,
+	.woocommerce ul.products.columns-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.woocommerce ul.products,
+	.woocommerce ul.products.columns-3,
+	.woocommerce ul.products.columns-4 {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 32px 12px;
+	}
+
+	.woocommerce .woocommerce-ordering,
+	.woocommerce .woocommerce-result-count {
+		float: none;
+		margin-bottom: 16px;
+	}
+}
