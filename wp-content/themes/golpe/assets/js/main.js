@@ -12,9 +12,13 @@
 
 	/* 모바일 메뉴 ------------------------------------------------------- */
 	var drawer = document.getElementById( 'mobile-drawer' );
+	var drawerPanel = drawer ? drawer.querySelector( '.mobile-drawer__panel' ) : null;
 	var openButtons = document.querySelectorAll( '[data-golpe-menu-open]' );
 	var closeButtons = document.querySelectorAll( '[data-golpe-menu-close]' );
 	var lastFocus = null;
+	var hideTimer = null;
+	var inertTargets = [];
+	var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 	function setExpanded( buttons, value ) {
 		buttons.forEach( function ( button ) {
@@ -22,9 +26,40 @@
 		} );
 	}
 
+	// 메뉴가 열려 있는 동안 뒤쪽 화면(헤더·본문·푸터)을 조작·낭독할 수 없게 합니다.
+	function setBackgroundInert( value ) {
+		if ( value ) {
+			inertTargets = Array.prototype.filter.call( body.children, function ( el ) {
+				return el !== drawer && ! el.hasAttribute( 'inert' ) && el.tagName !== 'SCRIPT';
+			} );
+			inertTargets.forEach( function ( el ) {
+				el.setAttribute( 'inert', '' );
+			} );
+		} else {
+			inertTargets.forEach( function ( el ) {
+				el.removeAttribute( 'inert' );
+			} );
+			inertTargets = [];
+		}
+	}
+
+	function getDrawerFocusables() {
+		if ( ! drawerPanel ) {
+			return [];
+		}
+		return Array.prototype.filter.call( drawerPanel.querySelectorAll( FOCUSABLE ), function ( el ) {
+			return el.offsetParent !== null;
+		} );
+	}
+
 	function openDrawer() {
 		if ( ! drawer ) {
 			return;
+		}
+		// 닫히는 중에 다시 열면, 예약된 숨김 처리를 취소합니다.
+		if ( hideTimer ) {
+			window.clearTimeout( hideTimer );
+			hideTimer = null;
 		}
 		lastFocus = document.activeElement;
 		drawer.hidden = false;
@@ -34,23 +69,29 @@
 		} );
 		body.classList.add( 'is-locked' );
 		setExpanded( openButtons, true );
-		var firstLink = drawer.querySelector( 'a, button' );
-		if ( firstLink ) {
-			firstLink.focus();
+		setBackgroundInert( true );
+
+		// 첫 포커스는 '메뉴 닫기' 버튼에 둡니다.
+		var closeButton = drawer.querySelector( '.mobile-drawer__head [data-golpe-menu-close]' );
+		var target = closeButton || getDrawerFocusables()[ 0 ];
+		if ( target ) {
+			target.focus();
 		}
 	}
 
-	function closeDrawer() {
-		if ( ! drawer || drawer.hidden ) {
+	function closeDrawer( restoreFocus ) {
+		if ( ! drawer || drawer.hidden || ! drawer.classList.contains( 'is-open' ) ) {
 			return;
 		}
 		drawer.classList.remove( 'is-open' );
 		body.classList.remove( 'is-locked' );
 		setExpanded( openButtons, false );
-		window.setTimeout( function () {
+		setBackgroundInert( false );
+		hideTimer = window.setTimeout( function () {
 			drawer.hidden = true;
+			hideTimer = null;
 		}, 350 );
-		if ( lastFocus ) {
+		if ( restoreFocus !== false && lastFocus && document.contains( lastFocus ) ) {
 			lastFocus.focus();
 		}
 	}
@@ -59,8 +100,39 @@
 		button.addEventListener( 'click', openDrawer );
 	} );
 	closeButtons.forEach( function ( button ) {
-		button.addEventListener( 'click', closeDrawer );
+		button.addEventListener( 'click', function () {
+			closeDrawer();
+		} );
 	} );
+
+	if ( drawer ) {
+		// Tab / Shift+Tab 이 메뉴 안에서만 돌도록 합니다. (포커스 가두기)
+		drawer.addEventListener( 'keydown', function ( event ) {
+			if ( event.key !== 'Tab' ) {
+				return;
+			}
+			var items = getDrawerFocusables();
+			if ( ! items.length ) {
+				return;
+			}
+			var first = items[ 0 ];
+			var last = items[ items.length - 1 ];
+			if ( event.shiftKey && document.activeElement === first ) {
+				event.preventDefault();
+				last.focus();
+			} else if ( ! event.shiftKey && document.activeElement === last ) {
+				event.preventDefault();
+				first.focus();
+			}
+		} );
+
+		// 메뉴 안 링크를 누르면 메뉴를 닫습니다. (같은 페이지 내 이동 대비)
+		drawer.addEventListener( 'click', function ( event ) {
+			if ( event.target.closest && event.target.closest( '.mobile-drawer__panel a[href]' ) ) {
+				closeDrawer( false );
+			}
+		} );
+	}
 
 	// 화면이 넓어지면 모바일 메뉴 자동 닫기.
 	window.addEventListener( 'resize', function () {
@@ -102,6 +174,10 @@
 		closeDrawer();
 		if ( searchPanel && ! searchPanel.hidden ) {
 			toggleSearch( false );
+			// 검색창을 닫으면 포커스를 검색 버튼으로 되돌립니다.
+			if ( searchToggles.length ) {
+				searchToggles[ 0 ].focus();
+			}
 		}
 	} );
 
