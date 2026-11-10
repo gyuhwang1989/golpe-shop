@@ -431,3 +431,19 @@
 	font-size: 12px;
 	color: var(--golpe-gray-500);
 }
+
+/* 개인통관고유부호 안내(수집 목적)는 입력칸을 누르기 전에도 항상 보이도록 합니다. */
+.woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description {
+	display: block !important;
+	position: static;
+	margin: 8px 0 0;
+	padding: 0;
+	background: none;
+	color: var(--golpe-gray-500);
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+.woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description::before {
+	content: none;
+}

@@ -31,6 +31,8 @@ function golpe_agency_defaults() {
 		'agency_return_cost'     => '',
 		'agency_cs_hours'        => '',
 		'agency_guide_page'      => 0,
+		// 주문 완료 · 취소 · 환불 후 개인통관고유부호를 보관하는 기간(일). 지나면 자동 삭제.
+		'agency_customs_retention_days' => 90,
 	);
 }
 
@@ -108,11 +110,47 @@ function golpe_agency_key_terms() {
 			golpe_agency_duty_free_limit()
 		),
 		'customs'  => __( '통관을 위해 수취인 본인 명의의 개인통관고유부호가 필요합니다.', 'golpe' ),
-		'refund'   => __( '상품을 받은 날부터 7일 이내에 청약철회(반품)를 신청할 수 있습니다. ', 'golpe' ) . golpe_agency_return_cost_text(),
+		'refund'   => __( '상품을 받기 전에는 언제든 주문 취소를, 받은 후에는 받은 날부터 7일 이내에 반품(청약철회)을 신청할 수 있습니다. ', 'golpe' ) . golpe_agency_return_cost_text(),
 		'defect'   => __( '상품 하자 · 오배송 등 표시 · 광고 또는 계약 내용과 다른 경우 반품 비용은 GOLPE가 부담합니다.', 'golpe' ),
 	);
 
 	return apply_filters( 'golpe_agency_key_terms', $terms );
+}
+
+/**
+ * 결제 · 장바구니용 짧은 핵심 조건 (4줄).
+ * 자세한 내용은 golpe_agency_key_terms() 와 이용 안내 페이지에 있습니다.
+ *
+ * @return array 항목 키 => 문장.
+ */
+function golpe_agency_checkout_terms() {
+	$terms = array(
+		'shipping' => sprintf(
+			/* translators: %s: 배송 기간 */
+			__( '해외구매대행 상품 · 예상 배송 %s', 'golpe' ),
+			golpe_agency_option( 'agency_shipping_period' )
+		),
+		'duty'     => sprintf(
+			/* translators: %s: 면세 한도 */
+			__( '관부가세: %s 초과 시 고객 부담', 'golpe' ),
+			golpe_agency_duty_free_limit()
+		),
+		'refund'   => __( '취소 · 반품: 받기 전 언제든 취소, 받은 후 7일 이내 반품 가능 (단순변심은 반품 실비만 부담)', 'golpe' ),
+		'defect'   => __( '하자 · 오배송은 반품 비용 전액 GOLPE 부담', 'golpe' ),
+	);
+
+	return apply_filters( 'golpe_agency_checkout_terms', $terms );
+}
+
+/**
+ * 결제 · 장바구니용 짧은 핵심 조건 목록 출력.
+ */
+function golpe_agency_checkout_terms_list() {
+	echo '<ul class="agency-terms agency-terms--short">';
+	foreach ( golpe_agency_checkout_terms() as $key => $text ) {
+		echo '<li class="' . esc_attr( 'agency-terms__item agency-terms__item--' . $key ) . '">' . esc_html( $text ) . '</li>';
+	}
+	echo '</ul>';
 }
 
 /**
@@ -156,6 +194,27 @@ function golpe_agency_customize_register( $wp_customize ) {
 			)
 		);
 	}
+
+	$wp_customize->add_setting(
+		'golpe_agency_customs_retention_days',
+		array(
+			'default'           => $defaults['agency_customs_retention_days'],
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'golpe_agency_customs_retention_days',
+		array(
+			'label'       => __( '개인통관고유부호 보관 기간 (일)', 'golpe' ),
+			'description' => __( '주문이 완료 · 취소 · 환불된 뒤 이 기간이 지나면 번호를 자동 삭제합니다. 법적 보관 의무가 있는지 확인 후 정하세요. (기본 90일)', 'golpe' ),
+			'section'     => 'golpe_agency',
+			'type'        => 'number',
+			'input_attrs' => array(
+				'min'  => 1,
+				'step' => 1,
+			),
+		)
+	);
 
 	$wp_customize->add_setting(
 		'golpe_agency_guide_page',

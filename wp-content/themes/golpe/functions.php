@@ -10,6 +10,7 @@
  * - customizer.php   : 관리자 > 외모 > 사용자 정의하기 설정 항목
  * - purchase-agency.php    : 해외구매대행 공통 설정 · 안내 문구
  * - woocommerce.php        : WooCommerce 가 활성화된 경우에만 불러오는 연동 코드
+ * - customs-privacy.php    : 개인통관고유부호 암호화 · 열람 제한 · 자동 삭제 (WooCommerce 활성 시)
  * - woocommerce-agency.php : 구매대행 상품 유의사항 · 결제 확인 · 개인통관고유부호 (WooCommerce 활성 시)
  *
  * @package GOLPE
@@ -34,5 +35,6 @@ require GOLPE_DIR . '/inc/purchase-agency.php';
 // (플러그인은 테마보다 먼저 로드되므로 이 시점에 확인할 수 있습니다.)
 if ( golpe_is_woocommerce_active() ) {
 	require GOLPE_DIR . '/inc/woocommerce.php';
+	require GOLPE_DIR . '/inc/customs-privacy.php';
 	require GOLPE_DIR . '/inc/woocommerce-agency.php';
 }

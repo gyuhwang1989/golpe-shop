@@ -6,7 +6,8 @@
  * 2) 상품 상세: 가격 구성표 + 구매대행 유의사항 박스
  * 3) 장바구니: 핵심 조건 요약
  * 4) 결제: 개인통관고유부호 입력(필수) + 구매대행 조건 확인 체크박스(필수)
- * 5) 관리자 주문 화면: 개인통관고유부호 · 조건 확인 시각 표시
+ * 5) 관리자 주문 화면: 개인통관고유부호(마스킹, 권한자만 열람) · 조건 확인 시각 표시
+ *    (암호화 · 열람 기록 · 자동 삭제는 inc/customs-privacy.php)
  * 6) 결제 페이지가 "블록 결제"이면 관리자에게 경고 (이 기능들은 클래식 결제에서 동작)
  *
  * 결제 금액 계산(가격 · 배송비 · 세금)은 변경하지 않습니다.
@@ -44,19 +45,7 @@ function golpe_is_valid_customs_code( $code ) {
 	return (bool) preg_match( '/^P\d{12}$/', (string) $code );
 }
 
-/**
- * 화면 표시용 마스킹 (예: P1234*****789).
- *
- * @param string $code 개인통관고유부호.
- * @return string
- */
-function golpe_mask_customs_code( $code ) {
-	$code = (string) $code;
-	if ( strlen( $code ) < 8 ) {
-		return $code;
-	}
-	return substr( $code, 0, 5 ) . str_repeat( '*', strlen( $code ) - 8 ) . substr( $code, -3 );
-}
+// 마스킹 · 암호화 · 열람 · 삭제는 inc/customs-privacy.php 에 있습니다.
 
 /**
  * 상품별 구매대행 정보.
@@ -220,7 +209,7 @@ function golpe_cart_agency_notice() {
 	?>
 	<div class="agency-notice agency-notice--cart">
 		<p class="agency-notice__badge"><?php esc_html_e( '해외구매대행 주문 안내', 'golpe' ); ?></p>
-		<?php golpe_agency_terms_list( array( 'shipping', 'duty', 'customs', 'refund' ) ); ?>
+		<?php golpe_agency_checkout_terms_list(); ?>
 		<?php golpe_agency_guide_link(); ?>
 	</div>
 	<?php
@@ -269,12 +258,12 @@ function golpe_checkout_terms_box() {
 	?>
 	<div class="agency-notice agency-notice--checkout">
 		<p class="agency-notice__badge"><?php esc_html_e( '해외구매대행 핵심 조건', 'golpe' ); ?></p>
-		<?php golpe_agency_terms_list(); ?>
+		<?php golpe_agency_checkout_terms_list(); ?>
 		<?php golpe_agency_guide_link(); ?>
 		<p class="form-row validate-required agency-confirm">
 			<label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
 				<input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="golpe_agency_confirm" id="golpe_agency_confirm" value="1" <?php checked( $checked ); ?> />
-				<span><?php esc_html_e( '위 해외구매대행 이용 조건을 확인했습니다.', 'golpe' ); ?></span>&nbsp;<abbr class="required" title="<?php esc_attr_e( '필수', 'golpe' ); ?>">*</abbr>
+				<span><?php esc_html_e( '위 해외구매대행 이용 조건을 확인했습니다.', 'golpe' ); ?>&nbsp;<abbr class="required" title="<?php esc_attr_e( '필수', 'golpe' ); ?>">*</abbr></span>
 			</label>
 			<span class="agency-confirm__help"><?php esc_html_e( '이 확인은 조건 안내를 위한 것이며, 법에서 보장하는 청약철회 · 환불 권리에는 영향을 주지 않습니다.', 'golpe' ); ?></span>
 		</p>
@@ -300,21 +289,28 @@ function golpe_checkout_validate() {
 	if ( empty( $_POST['golpe_agency_confirm'] ) ) {
 		wc_add_notice( __( '해외구매대행 이용 조건 확인에 체크해 주세요.', 'golpe' ), 'error', array( 'id' => 'golpe_agency_confirm' ) );
 	}
+
+	// 암호화를 할 수 없는 서버에서는 개인통관고유부호를 받지 않습니다. (평문 저장 방지)
+	if ( ! golpe_customs_crypto_available() ) {
+		wc_add_notice( __( '보안 설정 문제로 지금은 주문할 수 없습니다. 고객센터로 문의해 주세요.', 'golpe' ), 'error' );
+	}
 	// phpcs:enable
 }
 add_action( 'woocommerce_checkout_process', 'golpe_checkout_validate' );
 
 /**
  * 주문에 저장 (HPOS 호환: 주문 객체 메타 사용).
+ * 개인통관고유부호는 암호화해서만 저장합니다. (inc/customs-privacy.php)
  *
  * @param WC_Order $order 주문.
+ * @throws Exception 암호화 실패 시 주문 생성을 중단합니다.
  */
 function golpe_checkout_save( $order ) {
 	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( isset( $_POST['golpe_customs_code'] ) ) {
 		$code = golpe_normalize_customs_code( sanitize_text_field( wp_unslash( $_POST['golpe_customs_code'] ) ) );
-		if ( golpe_is_valid_customs_code( $code ) ) {
-			$order->update_meta_data( '_golpe_customs_code', $code );
+		if ( golpe_is_valid_customs_code( $code ) && ! golpe_store_customs_code( $order, $code ) ) {
+			throw new Exception( esc_html__( '보안 설정 문제로 주문을 처리할 수 없습니다. 고객센터로 문의해 주세요.', 'golpe' ) );
 		}
 	}
 	if ( ! empty( $_POST['golpe_agency_confirm'] ) ) {
@@ -334,15 +330,13 @@ add_action( 'woocommerce_checkout_create_order', 'golpe_checkout_save' );
  * @param WC_Order $order 주문.
  */
 function golpe_admin_order_agency_info( $order ) {
-	$code      = $order->get_meta( '_golpe_customs_code' );
 	$confirmed = $order->get_meta( '_golpe_agency_confirmed_at' );
-	if ( ! $code && ! $confirmed ) {
+	$deleted   = $order->get_meta( GOLPE_CUSTOMS_META_DELETED );
+	if ( ! golpe_order_has_customs_code( $order ) && ! $deleted && ! $confirmed ) {
 		return;
 	}
 	echo '<div class="golpe-admin-agency"><h3>' . esc_html__( '해외구매대행', 'golpe' ) . '</h3>';
-	if ( $code ) {
-		echo '<p><strong>' . esc_html__( '개인통관고유부호', 'golpe' ) . ':</strong> ' . esc_html( $code ) . '</p>';
-	}
+	golpe_admin_order_customs_markup( $order );
 	if ( $confirmed ) {
 		echo '<p><strong>' . esc_html__( '조건 확인 (UTC)', 'golpe' ) . ':</strong> ' . esc_html( $confirmed ) . '</p>';
 	}
@@ -356,11 +350,11 @@ add_action( 'woocommerce_admin_order_data_after_shipping_address', 'golpe_admin_
  * @param WC_Order $order 주문.
  */
 function golpe_customer_order_agency_info( $order ) {
-	$code = $order->get_meta( '_golpe_customs_code' );
-	if ( ! $code ) {
+	$masked = golpe_get_masked_customs_code( $order );
+	if ( '' === $masked ) {
 		return;
 	}
-	echo '<p class="golpe-order-customs"><strong>' . esc_html__( '개인통관고유부호', 'golpe' ) . ':</strong> ' . esc_html( golpe_mask_customs_code( $code ) ) . '</p>';
+	echo '<p class="golpe-order-customs"><strong>' . esc_html__( '개인통관고유부호', 'golpe' ) . ':</strong> ' . esc_html( $masked ) . '</p>';
 }
 add_action( 'woocommerce_order_details_after_customer_details', 'golpe_customer_order_agency_info' );
 
@@ -376,9 +370,13 @@ function golpe_block_checkout_admin_notice() {
 		return;
 	}
 	$checkout_id = wc_get_page_id( 'checkout' );
-	if ( $checkout_id <= 0 || ! has_block( 'woocommerce/checkout', $checkout_id ) ) {
-		return;
+	if ( $checkout_id > 0 && has_block( 'woocommerce/checkout', $checkout_id ) ) {
+		echo '<div class="notice notice-warning"><p><strong>GOLPE:</strong> ' . esc_html__( '현재 결제 페이지가 "블록 결제" 방식입니다. 개인통관고유부호 입력과 구매대행 조건 확인은 "클래식 결제"에서만 동작합니다. 결제 페이지 내용을 [woocommerce_checkout] 숏코드로 바꿔 주세요. (README 6-3 참고)', 'golpe' ) . '</p></div>';
 	}
-	echo '<div class="notice notice-warning"><p><strong>GOLPE:</strong> ' . esc_html__( '현재 결제 페이지가 "블록 결제" 방식입니다. 개인통관고유부호 입력과 구매대행 조건 확인은 "클래식 결제"에서만 동작합니다. 결제 페이지 내용을 [woocommerce_checkout] 숏코드로 바꿔 주세요. (README 참고)', 'golpe' ) . '</p></div>';
+
+	$cart_id = wc_get_page_id( 'cart' );
+	if ( $cart_id > 0 && has_block( 'woocommerce/cart', $cart_id ) ) {
+		echo '<div class="notice notice-warning"><p><strong>GOLPE:</strong> ' . esc_html__( '현재 장바구니 페이지가 "블록" 방식이라 구매대행 안내가 표시되지 않습니다. 장바구니 페이지 내용을 [woocommerce_cart] 숏코드로 바꿔 주세요. (README 6-3 참고)', 'golpe' ) . '</p></div>';
+	}
 }
 add_action( 'admin_notices', 'golpe_block_checkout_admin_notice' );

@@ -1691,3 +1691,139 @@ p {
 		padding: 20px;
 	}
 }
+
+/* 14-2. 이용 안내 페이지 보완 (요약 박스 · 소제목 · 모바일 목차 · 표) ------- */
+.agency-guide__summary {
+	margin: 0 0 clamp(32px, 4vw, 56px);
+}
+
+.agency-guide__summary .agency-terms {
+	margin-bottom: 0;
+}
+
+.agency-guide__section h3 {
+	margin: 28px 0 10px;
+	font-size: 16px;
+}
+
+.agency-guide__section h3:first-of-type {
+	margin-top: 8px;
+}
+
+.agency-guide__toc a.is-current {
+	color: var(--golpe-black);
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+
+@media (max-width: 1024px) {
+	/* 목차: 헤더 아래 고정되는 가로 스크롤 버튼 바 */
+	.agency-guide__toc {
+		position: sticky;
+		top: var(--golpe-header-h);
+		z-index: 50;
+		margin: 0 calc(var(--golpe-gutter) * -1);
+		padding: 10px var(--golpe-gutter);
+		background: rgba(255, 255, 255, 0.97);
+		border-bottom: 1px solid var(--golpe-gray-200);
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	.agency-guide__toc::-webkit-scrollbar {
+		display: none;
+	}
+
+	.agency-guide__toc ol {
+		display: flex;
+		gap: 8px;
+		width: max-content;
+		border-top: 0;
+	}
+
+	.agency-guide__toc li {
+		border-bottom: 0;
+	}
+
+	.agency-guide__toc a {
+		padding: 7px 14px;
+		border: 1px solid var(--golpe-gray-300);
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	.agency-guide__toc a::before {
+		content: none;
+	}
+
+	.agency-guide__toc a.is-current {
+		background: var(--golpe-black);
+		border-color: var(--golpe-black);
+		color: var(--golpe-white);
+		text-decoration: none;
+	}
+
+	.agency-guide__section {
+		scroll-margin-top: calc(var(--golpe-header-h) + 72px);
+	}
+
+	.admin-bar .agency-guide__toc {
+		top: calc(var(--golpe-header-h) + 46px);
+	}
+}
+
+@media (max-width: 640px) {
+	.agency-guide__section {
+		padding-bottom: 32px;
+		margin-bottom: 32px;
+	}
+
+	.agency-guide__section ul,
+	.agency-guide__section ol {
+		padding-left: 18px;
+	}
+
+	/* 가격 구성표: 행을 카드처럼 세로로 쌓기 */
+	.agency-table--stack thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+	}
+
+	.agency-table--stack tr {
+		display: block;
+		padding: 12px 0;
+		border-bottom: 1px solid var(--golpe-gray-200);
+	}
+
+	.agency-table--stack td {
+		display: flex;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 3px 0;
+		border-bottom: 0;
+	}
+
+	.agency-table--stack td::before {
+		content: attr(data-label);
+		flex: 0 0 auto;
+		color: var(--golpe-gray-500);
+		font-size: 12px;
+	}
+
+	.agency-table--stack td:first-child {
+		font-weight: 700;
+		font-size: 15px;
+	}
+
+	.agency-table--stack td:first-child::before {
+		content: none;
+	}
+
+	.agency-table--stack td:not(:first-child) {
+		text-align: right;
+	}
+}
