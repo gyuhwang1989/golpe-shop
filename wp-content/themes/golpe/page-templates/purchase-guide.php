@@ -149,11 +149,13 @@ get_header();
 			<section id="guide-refund" class="agency-guide__section agency-guide__section--emphasis">
 				<h2><?php echo esc_html( $golpe_sections['refund'] ); ?></h2>
 				<p><strong><?php esc_html_e( '해외구매대행 상품도 국내 전자상거래법이 적용되어, 다른 온라인 쇼핑몰과 동일하게 청약철회(반품) · 환불을 받으실 수 있습니다.', 'golpe' ); ?></strong></p>
+				<p class="agency-guide__principle"><?php esc_html_e( '상품 하자 · 오배송 · 현지 품절 · GOLPE 사정에 의한 발송 지연 등 GOLPE의 책임 있는 사유로 취소 · 반품하는 경우, 반송비를 포함한 모든 비용은 GOLPE가 부담하며 결제 금액 전액을 환불합니다.', 'golpe' ); ?></p>
 				<h3><?php esc_html_e( '① 상품을 받기 전 — 주문 취소', 'golpe' ); ?></h3>
 				<ul>
 					<li><?php esc_html_e( '결제 후 상품을 받기 전에도 언제든 주문 취소(청약철회)를 신청하실 수 있습니다.', 'golpe' ); ?></li>
-					<li><?php esc_html_e( '현지 구매 전이면 결제 금액 전액을 환불합니다.', 'golpe' ); ?></li>
-					<li><?php esc_html_e( '이미 현지에서 구매 · 발송된 경우에도 취소하실 수 있으며, 이때는 상품을 되돌려 보내는 데 실제로 드는 비용(주문 전 안내한 금액 범위)만 부담하시고 나머지 금액은 환불됩니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '현지 구매 전 취소: 결제 금액 전액을 환불합니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '현지 구매 · 발송 후 단순변심 취소: 상품을 되돌려 보내는 데 실제로 드는 비용(주문 전 안내한 금액 또는 산정 기준 범위)만 빼고 환불합니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '현지 품절, GOLPE 사정에 의한 발송 지연 등 GOLPE의 책임 있는 사유로 취소하는 경우에는 어떤 비용도 빼지 않고 전액 환불합니다.', 'golpe' ); ?></li>
 				</ul>
 
 				<h3><?php esc_html_e( '② 상품을 받은 후 — 단순변심 반품', 'golpe' ); ?></h3>
@@ -173,8 +175,9 @@ get_header();
 				<ul>
 					<li><?php esc_html_e( '상품을 받기 전 취소: 취소를 신청하신 날부터 3영업일 이내에 환불합니다.', 'golpe' ); ?></li>
 					<li><?php esc_html_e( '반품: 반품 상품을 돌려받은 날부터 3영업일 이내에 환불합니다.', 'golpe' ); ?></li>
-					<li><?php esc_html_e( '신용카드 결제는 카드사에 결제 취소를 요청하며, 카드사 사정에 따라 반영 시점이 다를 수 있습니다.', 'golpe' ); ?></li>
-					<li><?php esc_html_e( 'GOLPE의 사정으로 환불이 늦어지면, 늦어진 기간에 대해 법에서 정한 지연이자를 함께 지급합니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '신용카드 등으로 결제하신 경우 결제업자에게 지체 없이 결제 취소를 요청합니다. 실제 반영 시점은 카드사마다 다를 수 있습니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '환불 금액에서 빼는 비용은 단순변심 취소 · 반품의 반송 실비뿐이며, GOLPE의 책임 있는 사유인 경우에는 빼는 비용 없이 전액 환불합니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '3영업일 기한을 넘겨 환불하는 경우, 늦어진 기간에 대해 전자상거래법에서 정한 지연이자를 함께 지급합니다.', 'golpe' ); ?></li>
 				</ul>
 
 				<h3><?php esc_html_e( '⑤ 관부가세 환급', 'golpe' ); ?></h3>
@@ -189,9 +192,11 @@ get_header();
 
 				<h3><?php esc_html_e( '⑦ 청약철회가 제한될 수 있는 경우', 'golpe' ); ?></h3>
 				<ul>
-					<li><?php esc_html_e( '고객님의 책임 있는 사유로 상품이 멸실 · 훼손된 경우 (상품 확인을 위해 포장을 뜯은 것은 해당하지 않습니다)', 'golpe' ); ?></li>
-					<li><?php esc_html_e( '사용 또는 일부 소비로 상품 가치가 현저히 줄어든 경우', 'golpe' ); ?></li>
-					<li><?php esc_html_e( '그 밖에 전자상거래법에서 정한 사유에 해당하는 경우. 단, 이러한 사유를 미리 알리는 등 법에서 정한 조치가 없었다면 청약철회가 제한되지 않습니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '고객님의 책임 있는 사유로 상품이 멸실 · 훼손된 경우 (상품 내용을 확인하기 위해 포장을 뜯은 것은 해당하지 않습니다)', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '고객님의 사용 또는 일부 소비로 상품 가치가 현저히 줄어든 경우', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '시간이 지나 다시 판매하기 어려울 정도로 상품 가치가 현저히 줄어든 경우', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '단, 위 두 번째 · 세 번째 경우라도 GOLPE가 그 사실을 상품 페이지 등에 미리 명확하게 표시하는 등 법에서 정한 조치를 하지 않았다면 청약철회가 제한되지 않습니다.', 'golpe' ); ?></li>
+					<li><?php esc_html_e( '상품이 표시 · 광고 내용과 다르거나 계약 내용과 다르게 이행된 경우(③)에는 위 사유와 관계없이 청약철회하실 수 있습니다.', 'golpe' ); ?></li>
 				</ul>
 			</section>
 

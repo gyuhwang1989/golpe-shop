@@ -447,3 +447,11 @@
 .woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description::before {
 	content: none;
 }
+
+/* WooCommerce 기본 스타일이 설명 안 링크를 흰색으로 칠하므로 우선순위를 높여 덮어씁니다. */
+.woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description a,
+.golpe-customs-field .description a {
+	color: var(--golpe-black);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}

@@ -29,6 +29,7 @@ function golpe_agency_defaults() {
 		'agency_country'         => __( '중국', 'golpe' ),
 		'agency_shipping_period' => __( '결제 완료 후 약 7~14 영업일', 'golpe' ),
 		'agency_return_cost'     => '',
+		'agency_return_cost_basis' => __( '국내 회수 택배비 + 현지 판매처까지 국제 반송비 (상품 무게 · 부피 기준 실제 비용)', 'golpe' ),
 		'agency_cs_hours'        => '',
 		'agency_guide_page'      => 0,
 		// 주문 완료 · 취소 · 환불 후 개인통관고유부호를 보관하는 기간(일). 지나면 자동 삭제.
@@ -73,17 +74,34 @@ function golpe_agency_guide_url() {
 }
 
 /**
+ * 단순변심 반송비 요약: 금액이 있으면 금액, 없으면 산정 기준.
+ *
+ * @return string
+ */
+function golpe_agency_return_cost_summary() {
+	$cost  = trim( (string) golpe_agency_option( 'agency_return_cost' ) );
+	$basis = trim( (string) golpe_agency_option( 'agency_return_cost_basis' ) );
+	if ( '' === $basis ) {
+		$defaults = golpe_agency_defaults();
+		$basis    = $defaults['agency_return_cost_basis'];
+	}
+	if ( '' !== $cost ) {
+		/* translators: 1: 반송비 금액, 2: 산정 기준 */
+		return sprintf( __( '%1$s (산정 기준: %2$s)', 'golpe' ), $cost, $basis );
+	}
+	/* translators: %s: 산정 기준 */
+	return sprintf( __( '산정 기준: %s', 'golpe' ), $basis );
+}
+
+/**
  * 단순변심 반품 비용 안내 문장.
+ * 판매자(GOLPE) 책임 있는 사유일 때는 고객 부담이 없음을 함께 안내합니다.
  *
  * @return string
  */
 function golpe_agency_return_cost_text() {
-	$cost = trim( (string) golpe_agency_option( 'agency_return_cost' ) );
-	if ( '' !== $cost ) {
-		/* translators: %s: 반품 비용 */
-		return sprintf( __( '단순변심 반품 시 실제 반품 비용(%s)만 고객님이 부담합니다.', 'golpe' ), $cost );
-	}
-	return __( '단순변심 반품 시 실제 발생하는 반품 배송비만 고객님이 부담하며, 금액은 주문 전 안내해 드립니다.', 'golpe' );
+	/* translators: %s: 반송비 요약 */
+	return sprintf( __( '단순변심 취소 · 반품 시에는 반송에 실제로 드는 비용만 고객님이 부담합니다 — %s. GOLPE의 책임 있는 사유인 경우 고객님 부담은 없습니다.', 'golpe' ), golpe_agency_return_cost_summary() );
 }
 
 /**
@@ -95,7 +113,7 @@ function golpe_agency_key_terms() {
 	$terms = array(
 		'agency'   => sprintf(
 			/* translators: %s: 구매 국가 */
-			__( '이 상품은 %s 현지에서 고객님을 대신해 구매하는 해외구매대행 상품입니다. 주문 후 현지에서 구매가 진행됩니다.', 'golpe' ),
+			__( '거래 형태: 해외구매대행 — GOLPE가 고객님의 주문을 받아 %s 현지 판매처에서 대신 구매하며, 상품은 고객님 명의로 수입 통관됩니다. GOLPE는 국내에 재고를 두고 직접 판매하는 판매자가 아닙니다.', 'golpe' ),
 			golpe_agency_option( 'agency_country' )
 		),
 		'shipping' => sprintf(
@@ -111,32 +129,38 @@ function golpe_agency_key_terms() {
 		),
 		'customs'  => __( '통관을 위해 수취인 본인 명의의 개인통관고유부호가 필요합니다.', 'golpe' ),
 		'refund'   => __( '상품을 받기 전에는 언제든 주문 취소를, 받은 후에는 받은 날부터 7일 이내에 반품(청약철회)을 신청할 수 있습니다. ', 'golpe' ) . golpe_agency_return_cost_text(),
-		'defect'   => __( '상품 하자 · 오배송 등 표시 · 광고 또는 계약 내용과 다른 경우 반품 비용은 GOLPE가 부담합니다.', 'golpe' ),
+		'defect'   => __( '상품 하자 · 오배송 · 현지 품절 · GOLPE 사정에 의한 발송 지연 등 GOLPE의 책임 있는 사유로 취소 · 반품하는 경우 반송비 등 모든 비용은 GOLPE가 부담하고 전액 환불합니다.', 'golpe' ),
 	);
 
 	return apply_filters( 'golpe_agency_key_terms', $terms );
 }
 
 /**
- * 결제 · 장바구니용 짧은 핵심 조건 (4줄).
+ * 결제 · 장바구니용 짧은 핵심 조건 (5줄).
  * 자세한 내용은 golpe_agency_key_terms() 와 이용 안내 페이지에 있습니다.
  *
  * @return array 항목 키 => 문장.
  */
 function golpe_agency_checkout_terms() {
 	$terms = array(
-		'shipping' => sprintf(
-			/* translators: %s: 배송 기간 */
-			__( '해외구매대행 상품 · 예상 배송 %s', 'golpe' ),
-			golpe_agency_option( 'agency_shipping_period' )
+		'agency'   => sprintf(
+			/* translators: %s: 구매 국가 */
+			__( '거래 형태: 해외구매대행 — GOLPE가 %s 현지 판매처에서 대신 구매, 고객님 명의로 수입 통관', 'golpe' ),
+			golpe_agency_option( 'agency_country' )
 		),
-		'duty'     => sprintf(
-			/* translators: %s: 면세 한도 */
-			__( '관부가세: %s 초과 시 고객 부담', 'golpe' ),
+		'shipping' => sprintf(
+			/* translators: 1: 배송 기간, 2: 면세 한도 */
+			__( '예상 배송 %1$s · 관부가세는 %2$s 초과 시 고객 부담', 'golpe' ),
+			golpe_agency_option( 'agency_shipping_period' ),
 			golpe_agency_duty_free_limit()
 		),
-		'refund'   => __( '취소 · 반품: 받기 전 언제든 취소, 받은 후 7일 이내 반품 가능 (단순변심은 반품 실비만 부담)', 'golpe' ),
-		'defect'   => __( '하자 · 오배송은 반품 비용 전액 GOLPE 부담', 'golpe' ),
+		'refund'   => __( '취소 · 반품: 받기 전 언제든 취소, 받은 후 7일 이내 반품 가능', 'golpe' ),
+		'return'   => sprintf(
+			/* translators: %s: 반송비 요약 */
+			__( '단순변심 반송비(고객 부담): %s', 'golpe' ),
+			golpe_agency_return_cost_summary()
+		),
+		'defect'   => __( 'GOLPE 책임(하자 · 오배송 · 현지 품절 · GOLPE 사정에 의한 지연)이면 비용 전액 GOLPE 부담, 전액 환불', 'golpe' ),
 	);
 
 	return apply_filters( 'golpe_agency_checkout_terms', $terms );
@@ -173,7 +197,8 @@ function golpe_agency_customize_register( $wp_customize ) {
 	$text_fields = array(
 		'agency_country'         => __( '구매 국가', 'golpe' ),
 		'agency_shipping_period' => __( '예상 배송기간 (예: 결제 완료 후 약 7~14 영업일)', 'golpe' ),
-		'agency_return_cost'     => __( '단순변심 반품 비용 (예: 국내 회수비 + 해외 반송비 실비, 약 OO원) — 실제 비용 범위 내로만 입력', 'golpe' ),
+		'agency_return_cost'     => __( '단순변심 반송비 금액 (예: 국내 회수 4,000원 + 국제 반송 약 15,000원~) — 실제 비용 범위 내로만 입력. 결제 화면에 표시됩니다', 'golpe' ),
+		'agency_return_cost_basis' => __( '단순변심 반송비 산정 기준 (금액을 비우면 이 기준이 결제 화면에 표시됩니다)', 'golpe' ),
 		'agency_cs_hours'        => __( '고객센터 운영시간 (예: 평일 10:00~17:00, 주말·공휴일 휴무)', 'golpe' ),
 	);
 
@@ -213,6 +238,23 @@ function golpe_agency_customize_register( $wp_customize ) {
 				'min'  => 1,
 				'step' => 1,
 			),
+		)
+	);
+
+	$wp_customize->add_setting(
+		'golpe_agency_customs_allow_shop_manager',
+		array(
+			'default'           => false,
+			'sanitize_callback' => 'wp_validate_boolean',
+		)
+	);
+	$wp_customize->add_control(
+		'golpe_agency_customs_allow_shop_manager',
+		array(
+			'label'       => __( '상점 관리자(Shop manager)도 개인통관고유부호 전체 번호를 열람할 수 있게 허용', 'golpe' ),
+			'description' => __( '기본은 관리자만 열람할 수 있습니다. 꼭 필요한 경우에만 켜세요. 열람할 때마다 주문 메모에 기록됩니다.', 'golpe' ),
+			'section'     => 'golpe_agency',
+			'type'        => 'checkbox',
 		)
 	);
 

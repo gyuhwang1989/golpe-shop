@@ -226,6 +226,16 @@ add_action( 'woocommerce_before_cart_collaterals', 'golpe_cart_agency_notice' );
  * @param WC_Checkout $checkout 결제 객체.
  */
 function golpe_checkout_customs_field( $checkout ) {
+	$description = sprintf(
+		/* translators: %d: 보관 일수 */
+		__( 'P로 시작하는 13자리입니다. 관세청 유니패스에서 발급받을 수 있으며, 수입 통관 목적으로만 사용됩니다. 암호화해 보관하고 주문이 완료 · 취소 · 환불된 날부터 %d일이 지나면 자동 삭제합니다. 수취인 이름 · 전화번호가 등록 정보와 같아야 통관이 지연되지 않습니다.', 'golpe' ),
+		golpe_customs_retention_days()
+	);
+	$privacy_url = function_exists( 'get_privacy_policy_url' ) ? get_privacy_policy_url() : '';
+	if ( $privacy_url ) {
+		$description .= ' <a href="' . esc_url( $privacy_url ) . '" target="_blank" rel="noopener">' . esc_html__( '개인정보처리방침 보기', 'golpe' ) . '</a>';
+	}
+
 	echo '<div class="golpe-customs-field">';
 	echo '<h3>' . esc_html__( '개인통관고유부호', 'golpe' ) . '</h3>';
 	woocommerce_form_field(
@@ -237,7 +247,7 @@ function golpe_checkout_customs_field( $checkout ) {
 			'placeholder'       => 'P000000000000',
 			'maxlength'         => 15,
 			'autocomplete'      => 'off',
-			'description'       => __( 'P로 시작하는 13자리입니다. 관세청 유니패스에서 발급받을 수 있으며, 수입 통관 목적으로만 사용됩니다. 수취인 이름 · 전화번호가 등록 정보와 같아야 통관이 지연되지 않습니다.', 'golpe' ),
+			'description'       => $description,
 			'custom_attributes' => array(
 				'inputmode' => 'text',
 				'pattern'   => '[Pp][0-9 \-]{12,14}',
@@ -259,6 +269,9 @@ function golpe_checkout_terms_box() {
 	<div class="agency-notice agency-notice--checkout">
 		<p class="agency-notice__badge"><?php esc_html_e( '해외구매대행 핵심 조건', 'golpe' ); ?></p>
 		<?php golpe_agency_checkout_terms_list(); ?>
+		<?php if ( current_user_can( 'manage_woocommerce' ) && '' === trim( (string) golpe_agency_option( 'agency_return_cost' ) ) ) : ?>
+			<p class="admin-note"><?php esc_html_e( '[관리자에게만 보임] 단순변심 반송비 "금액"이 비어 있어 산정 기준만 표시됩니다. 사용자 정의하기 > 구매대행 안내에서 금액을 입력하는 것을 권장합니다.', 'golpe' ); ?></p>
+		<?php endif; ?>
 		<?php golpe_agency_guide_link(); ?>
 		<p class="form-row validate-required agency-confirm">
 			<label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
