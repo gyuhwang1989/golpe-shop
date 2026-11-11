@@ -455,3 +455,12 @@
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
+
+/* 상품 이미지 비율 통일 (디자인): 상품 상세 대표 이미지 · 썸네일도 목록과 같은 4:5 */
+.woocommerce div.product div.images .woocommerce-product-gallery__image img,
+.woocommerce div.product div.images .flex-control-thumbs li img {
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	background: var(--golpe-gray-100);
+}
