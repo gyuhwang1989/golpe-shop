@@ -346,3 +346,112 @@
 		margin-bottom: 16px;
 	}
 }
+
+/* 해외구매대행: 상품 상세 · 장바구니 · 결제 ------------------------------ */
+.woocommerce div.product .agency-notice {
+	clear: both;
+}
+
+.agency-notice__meta {
+	display: grid;
+	gap: 6px;
+	margin: 0 0 16px;
+}
+
+.agency-notice__meta div {
+	display: flex;
+	gap: 12px;
+}
+
+.agency-notice__meta dt {
+	flex: 0 0 72px;
+	color: var(--golpe-gray-500);
+}
+
+.agency-notice__meta dd {
+	margin: 0;
+	font-weight: 600;
+}
+
+.agency-notice__price {
+	margin: 0 0 16px;
+	color: var(--golpe-gray-700);
+}
+
+.agency-notice__details summary {
+	cursor: pointer;
+	font-weight: 700;
+	padding: 12px 0;
+	border-top: 1px solid var(--golpe-gray-200);
+}
+
+.agency-notice__details[open] summary {
+	margin-bottom: 12px;
+}
+
+.agency-notice--cart {
+	width: 100%;
+	clear: both;
+}
+
+.agency-notice--checkout {
+	margin-top: 0;
+}
+
+.agency-confirm {
+	margin: 16px 0 0 !important;
+	padding-top: 16px !important;
+	border-top: 1px solid var(--golpe-gray-200);
+}
+
+.agency-confirm label {
+	display: flex !important;
+	align-items: flex-start;
+	gap: 8px;
+	font-weight: 700;
+	color: var(--golpe-black);
+}
+
+.agency-confirm input {
+	margin-top: 4px;
+}
+
+.agency-confirm__help {
+	display: block;
+	margin-top: 6px;
+	font-size: 12px;
+	color: var(--golpe-gray-500);
+}
+
+.golpe-customs-field {
+	margin-top: 32px;
+}
+
+.golpe-customs-field .description {
+	font-size: 12px;
+	color: var(--golpe-gray-500);
+}
+
+/* 개인통관고유부호 안내(수집 목적)는 입력칸을 누르기 전에도 항상 보이도록 합니다. */
+.woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description {
+	display: block !important;
+	position: static;
+	margin: 8px 0 0;
+	padding: 0;
+	background: none;
+	color: var(--golpe-gray-500);
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+.woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description::before {
+	content: none;
+}
+
+/* WooCommerce 기본 스타일이 설명 안 링크를 흰색으로 칠하므로 우선순위를 높여 덮어씁니다. */
+.woocommerce form .golpe-customs-field .form-row .woocommerce-input-wrapper .description a,
+.golpe-customs-field .description a {
+	color: var(--golpe-black);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}

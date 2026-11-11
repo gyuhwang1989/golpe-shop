@@ -17,7 +17,8 @@ $golpe_business = golpe_business_info();
 	<div class="container footer-grid">
 		<div class="footer-brand">
 			<?php golpe_site_logo(); ?>
-			<p><?php esc_html_e( '프리미엄 골프백 · 골프웨어 · 액세서리 셀렉트숍', 'golpe' ); ?></p>
+			<p><?php esc_html_e( '중국 현지 골프백 · 골프웨어 · 액세서리 해외구매대행', 'golpe' ); ?></p>
+			<?php golpe_agency_guide_link(); ?>
 		</div>
 
 		<div class="footer-col">

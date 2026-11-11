@@ -191,3 +191,59 @@
 		onScroll();
 	}
 } )();
+
+/**
+ * 구매대행 이용 안내 페이지: 현재 보고 있는 섹션을 목차에 표시합니다.
+ */
+( function () {
+	'use strict';
+
+	var toc = document.querySelector( '[data-golpe-guide-toc]' );
+	if ( ! toc || ! ( 'IntersectionObserver' in window ) ) {
+		return;
+	}
+
+	var links = toc.querySelectorAll( 'a[href^="#"]' );
+	var map = {};
+	links.forEach( function ( link ) {
+		var section = document.getElementById( link.getAttribute( 'href' ).slice( 1 ) );
+		if ( section ) {
+			map[ section.id ] = link;
+		}
+	} );
+
+	function setCurrent( id ) {
+		links.forEach( function ( link ) {
+			link.classList.remove( 'is-current' );
+			link.removeAttribute( 'aria-current' );
+		} );
+		var active = map[ id ];
+		if ( ! active ) {
+			return;
+		}
+		active.classList.add( 'is-current' );
+		active.setAttribute( 'aria-current', 'true' );
+		// 모바일 가로 목차에서 현재 항목이 보이도록 스크롤합니다.
+		if ( toc.scrollWidth > toc.clientWidth ) {
+			toc.scrollTo( {
+				left: active.offsetLeft - ( toc.clientWidth - active.offsetWidth ) / 2,
+				behavior: 'smooth',
+			} );
+		}
+	}
+
+	var observer = new IntersectionObserver(
+		function ( entries ) {
+			entries.forEach( function ( entry ) {
+				if ( entry.isIntersecting ) {
+					setCurrent( entry.target.id );
+				}
+			} );
+		},
+		{ rootMargin: '-35% 0px -60% 0px' }
+	);
+
+	Object.keys( map ).forEach( function ( id ) {
+		observer.observe( document.getElementById( id ) );
+	} );
+} )();

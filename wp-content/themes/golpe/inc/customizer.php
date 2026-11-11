@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function golpe_option_defaults() {
 	return array(
-		'announcement'      => __( 'GOLPE 공식 온라인 스토어 — 신규 회원가입 혜택을 확인하세요', 'golpe' ),
+		'announcement'      => __( 'GOLPE는 중국 현지 골프용품 해외구매대행 쇼핑몰입니다 — 주문 전 구매대행 이용 안내를 확인해 주세요', 'golpe' ),
 		'hero_image'        => 0,
-		'hero_eyebrow'      => 'PREMIUM GOLF SELECT SHOP',
+		'hero_eyebrow'      => 'CHINA GOLF · OVERSEAS PURCHASE AGENCY',
 		'hero_title'        => 'PLAY WITH PRESENCE',
 		'hero_text'         => __( '필드 위의 존재감을 완성하는 골프백, 골프웨어, 액세서리.', 'golpe' ),
 		'hero_button_label' => __( '컬렉션 보기', 'golpe' ),
