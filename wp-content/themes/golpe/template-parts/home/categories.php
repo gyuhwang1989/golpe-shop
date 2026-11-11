@@ -21,7 +21,13 @@ $golpe_category_icons = array(
 	<div class="container">
 		<?php golpe_section_heading( __( '카테고리', 'golpe' ), 'CATEGORY' ); ?>
 
-		<div class="category-tiles">
+		<p class="category-scroll-hint" id="category-scroll-hint">
+			<span><?php esc_html_e( '옆으로 밀어서 더 보기', 'golpe' ); ?> <?php golpe_icon( 'arrow' ); ?></span>
+			<span class="category-scroll-hint__count" aria-hidden="true" data-golpe-cat-count>1 / <?php echo esc_html( (string) count( golpe_get_category_groups() ) ); ?></span>
+		</p>
+
+		<?php // 모바일에서는 가로 스크롤 목록이 됩니다. (키보드: 목록에 포커스 후 ← → 키, 링크는 Tab) ?>
+		<div class="category-tiles" role="region" aria-label="<?php esc_attr_e( '카테고리 목록', 'golpe' ); ?>" aria-describedby="category-scroll-hint" data-golpe-cat-scroller>
 			<?php
 			foreach ( golpe_get_category_groups() as $golpe_group ) :
 				$golpe_image = golpe_category_image_url( $golpe_group['slug'] );

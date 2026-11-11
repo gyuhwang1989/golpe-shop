@@ -3,7 +3,8 @@
  * 메인 배너 (Hero) — 대형 이미지 + PLAY WITH PRESENCE. + SHOP NOW.
  *
  * 이미지: 사용자 정의하기 > GOLPE 테마 설정 > 메인 화면 > 메인 배너 이미지.
- * 이미지가 없으면 테마에 포함된 GOLPE 오리지널 흑백 일러스트(assets/images/hero-green.svg)를 보여줍니다.
+ * 최종 방향은 실제 촬영 사진입니다. 사진이 등록되지 않았을 때만
+ * 테마에 포함된 GOLPE 오리지널 흑백 일러스트(assets/images/hero-green.svg)를 대체 이미지로 보여줍니다.
  * ⚠️ 실제 사용 권한이 있는 사진만 올려 주세요. (타 브랜드 화보 · 로고 사용 금지)
  *
  * @package GOLPE
@@ -46,5 +47,8 @@ $golpe_button_url    = $golpe_button_url ? $golpe_button_url : golpe_shop_url();
 		<h1 class="hero__title"><?php echo esc_html( golpe_option( 'hero_title' ) ); ?></h1>
 		<p class="hero__text"><?php echo esc_html( golpe_option( 'hero_text' ) ); ?></p>
 		<a class="button button--light hero__cta" href="<?php echo esc_url( $golpe_button_url ); ?>"><?php echo esc_html( golpe_option( 'hero_button_label' ) ); ?></a>
+		<?php if ( ! $golpe_hero_image_id && current_user_can( 'edit_theme_options' ) ) : ?>
+			<p class="admin-note hero__admin-note"><?php esc_html_e( '[관리자에게만 보임] 지금은 기본 일러스트입니다. 사용자 정의하기 > GOLPE 테마 설정 > 메인 화면에서 실제 촬영 사진을 등록해 주세요.', 'golpe' ); ?></p>
+		<?php endif; ?>
 	</div>
 </section>

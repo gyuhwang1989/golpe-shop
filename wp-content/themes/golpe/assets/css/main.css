@@ -1212,14 +1212,34 @@ p {
 		object-position: 72% center;
 	}
 
+	/* 모바일 카테고리: 가로 스크롤 + scroll-snap (다음 카드가 살짝 보이도록) */
 	.category-tiles {
-		grid-template-columns: 1fr;
-		gap: 40px;
+		display: flex;
+		gap: 12px;
+		margin: 0 calc(var(--golpe-gutter) * -1);
+		padding: 0 var(--golpe-gutter) 4px;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--golpe-gutter);
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
 	}
 
-	.category-tile__media {
-		aspect-ratio: 3 / 2;
+	.category-tiles::-webkit-scrollbar {
+		display: none;
 	}
+
+	.category-tiles:focus-visible {
+		outline: 2px solid var(--golpe-black);
+		outline-offset: -2px;
+	}
+
+	.category-tile {
+		flex: 0 0 78%;
+		scroll-snap-align: start;
+	}
+
 
 	.section-heading {
 		align-items: flex-start;
@@ -2000,5 +2020,75 @@ p {
 
 	.footer-grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+
+/* 16. 카테고리 스크롤 힌트 · 모바일 여백 최종 점검 · 배너 관리자 안내 ------- */
+.category-scroll-hint {
+	display: none;
+	align-items: center;
+	justify-content: space-between;
+	margin: -8px 0 14px;
+	font-size: 12px;
+	color: var(--golpe-gray-500);
+}
+
+.category-scroll-hint span {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.category-scroll-hint .golpe-icon {
+	width: 14px;
+	height: 14px;
+}
+
+.category-scroll-hint__count {
+	font-family: var(--golpe-font-display);
+	letter-spacing: 0.12em;
+	color: var(--golpe-black);
+}
+
+.is-scrolled-end .category-scroll-hint .golpe-icon {
+	transform: scaleX(-1);
+}
+
+.hero__admin-note {
+	margin: 16px 0 0;
+	max-width: 520px;
+	font-size: 12px;
+}
+
+@media (max-width: 640px) {
+	:root {
+		--golpe-section: 72px;
+	}
+
+	.section-heading {
+		margin-bottom: 24px;
+	}
+
+	.agency-card {
+		padding: 24px;
+	}
+
+	.agency-flow {
+		margin-bottom: 24px;
+	}
+
+	.agency-intro__head {
+		margin-bottom: 32px;
+		gap: 16px;
+	}
+
+	.golpe-edit__products {
+		margin-top: 8px;
+	}
+
+	/* 위 기본 규칙(display: none)보다 뒤에 와야 모바일에서 보입니다. */
+	.category-scroll-hint {
+		display: flex;
 	}
 }

@@ -29,8 +29,8 @@ function golpe_option_defaults() {
 		'brand_title'       => __( '단순함이 가장 강한 스타일입니다.', 'golpe' ),
 		'brand_text'        => __( 'GOLPE는 블랙과 화이트, 두 가지 색에서 시작합니다. 군더더기 없는 디자인과 기능을 갖춘 골프용품만을 골라 소개합니다.', 'golpe' ),
 		'edit_eyebrow'      => __( '기획전', 'golpe' ),
-		'edit_title'        => __( '블랙 & 화이트 셀렉션', 'golpe' ),
-		'edit_text'         => __( 'GOLPE가 고른 이번 시즌의 골프백과 액세서리. 흑백의 절제된 디자인으로 필드 위 존재감을 완성하세요.', 'golpe' ),
+		'edit_title'        => 'THE GOLF EDIT.',
+		'edit_text'         => __( '필드 위의 스타일을 완성하는 특별한 선택.', 'golpe' ),
 		'edit_button_label' => 'VIEW EDIT',
 		'edit_url'          => '',
 		'edit_image'        => 0,
@@ -138,7 +138,8 @@ function golpe_customize_register( $wp_customize ) {
 			$wp_customize,
 			'golpe_hero_image',
 			array(
-				'label'     => __( '메인 배너 이미지 (권장 2400×1400, 비우면 블랙 배경)', 'golpe' ),
+				'label'       => __( '메인 배너 이미지 — 실제 촬영 사진 (최종 방향)', 'golpe' ),
+				'description' => __( '가로 2400×1400px 이상 권장. 사용 권한이 있는 직접 촬영 사진만 올려 주세요. 비워 두면 GOLPE 기본 일러스트가 대신 표시됩니다.', 'golpe' ),
 				'section'   => 'golpe_home',
 				'mime_type' => 'image',
 			)
