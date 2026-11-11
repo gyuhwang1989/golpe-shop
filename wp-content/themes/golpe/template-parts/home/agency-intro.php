@@ -1,6 +1,9 @@
 <?php
 /**
- * 해외구매대행 소개 섹션 (메인 배너 바로 아래).
+ * 해외구매대행 안내 (배송 · 통관 · 반품) — 메인 페이지.
+ *
+ * 안내 문구는 inc/purchase-agency.php 의 공통 함수 · 설정값을 그대로 사용합니다.
+ * (이 파일은 화면 배치만 담당하며, 반품 · 환불 정책 문구를 새로 만들지 않습니다.)
  *
  * @package GOLPE
  */
@@ -10,31 +13,51 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $golpe_country = golpe_agency_option( 'agency_country' );
-$golpe_steps   = apply_filters(
+$golpe_terms   = golpe_agency_checkout_terms();
+$golpe_keys    = golpe_agency_key_terms();
+
+$golpe_steps = apply_filters(
 	'golpe_agency_steps',
 	array(
 		array(
 			'en'    => 'ORDER',
 			'title' => __( '주문 · 결제', 'golpe' ),
-			'text'  => __( 'GOLPE에서 상품을 고르고 개인통관고유부호와 함께 주문합니다.', 'golpe' ),
 		),
 		array(
 			'en'    => 'PURCHASE',
 			/* translators: %s: 구매 국가 */
 			'title' => sprintf( __( '%s 현지 구매', 'golpe' ), $golpe_country ),
-			'text'  => __( '고객님을 대신해 현지 판매처에서 상품을 구매합니다.', 'golpe' ),
 		),
 		array(
 			'en'    => 'CUSTOMS',
 			'title' => __( '국제배송 · 통관', 'golpe' ),
-			'text'  => __( '국제배송 후 고객님 명의로 수입 통관이 진행됩니다.', 'golpe' ),
 		),
 		array(
 			'en'    => 'DELIVERY',
 			'title' => __( '국내 배송', 'golpe' ),
-			'text'  => __( '통관이 끝나면 국내 택배로 받아보실 수 있습니다.', 'golpe' ),
 		),
 	)
+);
+
+$golpe_cards = array(
+	array(
+		'icon'  => 'truck',
+		'en'    => 'SHIPPING',
+		'title' => __( '배송', 'golpe' ),
+		'items' => array( $golpe_keys['shipping'] ),
+	),
+	array(
+		'icon'  => 'search',
+		'en'    => 'CUSTOMS',
+		'title' => __( '통관', 'golpe' ),
+		'items' => array( $golpe_keys['customs'], $golpe_keys['duty'] ),
+	),
+	array(
+		'icon'  => 'refresh',
+		'en'    => 'RETURNS',
+		'title' => __( '취소 · 반품', 'golpe' ),
+		'items' => array( $golpe_terms['refund'], $golpe_terms['return'], $golpe_terms['defect'] ),
+	),
 );
 ?>
 <section class="section agency-intro" id="purchase-agency">
@@ -42,38 +65,43 @@ $golpe_steps   = apply_filters(
 		<div class="agency-intro__head">
 			<div>
 				<p class="section-eyebrow">OVERSEAS PURCHASE AGENCY</p>
-				<h2 class="section-title">
-					<?php
-					/* translators: %s: 구매 국가 */
-					printf( esc_html__( '%s 현지 골프용품, 해외구매대행 전문 쇼핑몰', 'golpe' ), esc_html( $golpe_country ) );
-					?>
-				</h2>
+				<h2 class="section-title"><?php esc_html_e( '해외구매대행 안내', 'golpe' ); ?></h2>
 			</div>
 			<p class="agency-intro__lead">
 				<?php
 				/* translators: %s: 구매 국가 */
 				printf( esc_html__( 'GOLPE는 %s 현지에서 판매되는 골프용품을 고객님을 대신해 구매하고, 국제배송과 통관을 거쳐 국내로 배송해 드리는 해외구매대행 서비스입니다.', 'golpe' ), esc_html( $golpe_country ) );
 				?>
-				<?php golpe_agency_guide_link(); ?>
 			</p>
 		</div>
 
-		<ol class="agency-steps">
+		<ol class="agency-flow" aria-label="<?php esc_attr_e( '진행 절차', 'golpe' ); ?>">
 			<?php foreach ( $golpe_steps as $golpe_i => $golpe_step ) : ?>
-				<li class="agency-step">
-					<span class="agency-step__num"><?php echo esc_html( sprintf( '%02d', $golpe_i + 1 ) ); ?></span>
-					<span class="agency-step__en"><?php echo esc_html( $golpe_step['en'] ); ?></span>
-					<h3 class="agency-step__title"><?php echo esc_html( $golpe_step['title'] ); ?></h3>
-					<p class="agency-step__text"><?php echo esc_html( $golpe_step['text'] ); ?></p>
+				<li class="agency-flow__step">
+					<span class="agency-flow__num"><?php echo esc_html( sprintf( '%02d', $golpe_i + 1 ) ); ?></span>
+					<span class="agency-flow__en"><?php echo esc_html( $golpe_step['en'] ); ?></span>
+					<span class="agency-flow__title"><?php echo esc_html( $golpe_step['title'] ); ?></span>
 				</li>
 			<?php endforeach; ?>
 		</ol>
 
-		<p class="agency-intro__note">
-			<?php
-			/* translators: 1: 배송 기간, 2: 면세 한도 */
-			printf( esc_html__( '예상 배송기간 %1$s · 면세 한도(%2$s) 초과 시 관부가세 고객 부담 · 상품 수령 후 7일 이내 청약철회 가능', 'golpe' ), esc_html( golpe_agency_option( 'agency_shipping_period' ) ), esc_html( golpe_agency_duty_free_limit() ) );
-			?>
-		</p>
+		<div class="agency-cards">
+			<?php foreach ( $golpe_cards as $golpe_card ) : ?>
+				<div class="agency-card">
+					<?php golpe_icon( $golpe_card['icon'] ); ?>
+					<p class="agency-card__en"><?php echo esc_html( $golpe_card['en'] ); ?></p>
+					<h3 class="agency-card__title"><?php echo esc_html( $golpe_card['title'] ); ?></h3>
+					<ul class="agency-card__list">
+						<?php foreach ( $golpe_card['items'] as $golpe_item ) : ?>
+							<li><?php echo esc_html( $golpe_item ); ?></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<div class="agency-intro__more">
+			<?php golpe_agency_guide_link(); ?>
+		</div>
 	</div>
 </section>

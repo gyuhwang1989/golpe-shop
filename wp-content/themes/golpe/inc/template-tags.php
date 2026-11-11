@@ -26,6 +26,10 @@ function golpe_get_icon( $name ) {
 		'truck'   => '<path d="M2 6h12v10H2z"/><path d="M14 10h4l4 4v2h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>',
 		'refresh' => '<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
 		'chat'    => '<path d="M4 5h16v11H9l-5 4V5z"/>',
+		// 카테고리 선 아이콘 (GOLPE 오리지널).
+		'golfbag' => '<path d="M8 6h8v15H8z"/><path d="M8 10h8M8 16h8"/><path d="M10 6V3M12 6V2M14 6V3.5"/><path d="M16 8h1.5a1.5 1.5 0 0 1 1.5 1.5V14"/>',
+		'shirt'   => '<path d="M8 3l-5 3 2 4 3-1v12h8V9l3 1 2-4-5-3"/><path d="M8 3c.8 1.4 2.2 2 4 2s3.2-.6 4-2"/>',
+		'ball'    => '<circle cx="12" cy="10" r="6"/><path d="M10 20h4M12 16v4"/><circle cx="10" cy="9" r=".6"/><circle cx="13" cy="8" r=".6"/><circle cx="12.5" cy="11" r=".6"/><circle cx="14.5" cy="10.5" r=".6"/>',
 	);
 
 	if ( ! isset( $icons[ $name ] ) ) {
