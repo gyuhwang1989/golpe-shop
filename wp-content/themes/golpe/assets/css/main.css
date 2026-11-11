@@ -19,13 +19,13 @@
 
 /* 1. 디자인 변수 ---------------------------------------------------------- */
 :root {
-	--golpe-black: #0a0a0a;
-	--golpe-ink: #1a1a1a;
+	--golpe-black: #111111;
+	--golpe-ink: #111111;
 	--golpe-gray-700: #4a4a4a;
 	--golpe-gray-500: #8a8a8a;
 	--golpe-gray-300: #cfcfcf;
 	--golpe-gray-200: #e6e6e6;
-	--golpe-gray-100: #f3f3f3;
+	--golpe-gray-100: #f5f5f5;
 	--golpe-white: #ffffff;
 
 	--golpe-font: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
@@ -33,7 +33,7 @@
 
 	--golpe-container: 1440px;
 	--golpe-gutter: clamp(20px, 4vw, 56px);
-	--golpe-section: clamp(72px, 10vw, 140px);
+	--golpe-section: clamp(88px, 11vw, 160px);
 	--golpe-header-h: 72px;
 	--golpe-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -164,8 +164,10 @@ p {
 
 .section-title {
 	margin: 0;
+	font-family: var(--golpe-font-display);
 	font-size: clamp(26px, 3vw, 40px);
-	font-weight: 700;
+	font-weight: 800;
+	letter-spacing: 0.02em;
 }
 
 .link-arrow {
@@ -550,24 +552,16 @@ p {
 	color: var(--golpe-gray-700);
 }
 
-/* 5. 히어로 -------------------------------------------------------------- */
+/* 5. 히어로 (대형 이미지 + PLAY WITH PRESENCE. + SHOP NOW) ------------------ */
 .hero {
 	position: relative;
 	display: flex;
-	align-items: center;
-	min-height: min(88vh, 820px);
-	padding: 120px 0;
+	align-items: flex-end;
+	min-height: min(92vh, 900px);
+	padding: 160px 0 clamp(64px, 9vw, 120px);
 	overflow: hidden;
 	background: var(--golpe-black);
 	color: var(--golpe-white);
-}
-
-.hero::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: radial-gradient(ellipse at 75% 30%, rgba(255, 255, 255, 0.10), transparent 55%);
-	pointer-events: none;
 }
 
 .hero__media {
@@ -581,26 +575,11 @@ p {
 	object-fit: cover;
 }
 
-.hero.has-image::after {
+.hero::after {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.25) 70%);
-}
-
-.hero__mark {
-	position: absolute;
-	right: -0.04em;
-	bottom: -0.2em;
-	font-family: var(--golpe-font-display);
-	font-size: clamp(120px, 26vw, 420px);
-	font-weight: 800;
-	line-height: 1;
-	letter-spacing: -0.02em;
-	color: transparent;
-	-webkit-text-stroke: 1px rgba(255, 255, 255, 0.18);
-	user-select: none;
-	pointer-events: none;
+	background: linear-gradient(0deg, rgba(17, 17, 17, 0.72) 0%, rgba(17, 17, 17, 0.08) 55%);
 }
 
 .hero__inner {
@@ -610,222 +589,129 @@ p {
 
 .hero__eyebrow {
 	font-family: var(--golpe-font-display);
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: 600;
 	letter-spacing: 0.32em;
-	color: rgba(255, 255, 255, 0.7);
-	margin-bottom: 24px;
+	color: rgba(255, 255, 255, 0.72);
+	margin-bottom: 20px;
 }
 
 .hero__title {
-	max-width: 11ch;
-	margin-bottom: 24px;
+	margin-bottom: 20px;
 	font-family: var(--golpe-font-display);
-	font-size: clamp(48px, 8vw, 120px);
+	font-size: clamp(44px, 7.4vw, 112px);
 	font-weight: 800;
 	line-height: 0.95;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.02em;
 }
 
 .hero__text {
-	max-width: 440px;
-	margin-bottom: 40px;
-	font-size: clamp(15px, 1.4vw, 18px);
+	max-width: 420px;
+	margin-bottom: 36px;
+	font-size: clamp(14px, 1.2vw, 16px);
 	color: rgba(255, 255, 255, 0.78);
 }
 
-.hero__actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 12px;
+.hero__cta {
+	min-width: 200px;
+	letter-spacing: 0.24em;
 }
 
-.hero__scroll {
-	position: absolute;
-	left: var(--golpe-gutter);
-	bottom: 32px;
-	z-index: 1;
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	font-size: 11px;
-	letter-spacing: 0.3em;
-	color: rgba(255, 255, 255, 0.6);
-}
-
-.hero__scroll::after {
-	content: "";
-	width: 64px;
-	height: 1px;
-	background: rgba(255, 255, 255, 0.5);
-}
-
-/* 6. 카테고리 타일 -------------------------------------------------------- */
+/* 6. 카테고리 (GOLF BAGS · GOLF WEAR · ACCESSORIES) -------------------------- */
 .category-tiles {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: clamp(12px, 1.6vw, 24px);
+	gap: clamp(16px, 2vw, 32px);
 }
 
 .category-tile__link {
-	position: relative;
-	display: flex;
-	align-items: flex-end;
-	aspect-ratio: 3 / 4;
-	overflow: hidden;
-	isolation: isolate;
-}
-
-.category-tile--dark .category-tile__link {
-	background: var(--golpe-black);
-	color: var(--golpe-white);
-}
-
-.category-tile--light .category-tile__link {
-	--golpe-tile-stroke: rgba(0, 0, 0, 0.9);
-	background: var(--golpe-gray-100);
+	display: block;
 	color: var(--golpe-black);
 }
 
 .category-tile__link:hover {
-	color: inherit;
+	color: var(--golpe-black);
+}
+
+.category-tile__media {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	background: var(--golpe-gray-100);
 }
 
 .category-tile__image {
 	position: absolute;
 	inset: 0;
-	z-index: -1;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	transition: transform 0.9s var(--golpe-ease);
-}
-
-.category-tile.has-image .category-tile__link {
-	color: var(--golpe-white);
-}
-
-.category-tile.has-image .category-tile__link::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: -1;
-	background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%);
-}
-
-.category-tile__mark {
-	position: absolute;
-	top: 0.12em;
-	left: 0.06em;
-	z-index: -1;
-	font-family: var(--golpe-font-display);
-	font-size: clamp(56px, 6.5vw, 110px);
-	font-weight: 800;
-	line-height: 0.9;
-	letter-spacing: -0.03em;
-	color: transparent;
-	-webkit-text-stroke: 1px var(--golpe-tile-stroke, rgba(255, 255, 255, 0.9));
-	opacity: 0.35;
-	writing-mode: vertical-rl;
-	transform: rotate(180deg);
-	transition: opacity 0.5s var(--golpe-ease), transform 0.9s var(--golpe-ease);
+	transition: opacity 0.4s var(--golpe-ease);
 }
 
 .category-tile__link:hover .category-tile__image {
-	transform: scale(1.05);
+	opacity: 0.9;
 }
 
-.category-tile__link:hover .category-tile__mark {
-	opacity: 0.6;
-	transform: rotate(180deg) translateY(12px);
+.category-tile__icon .golpe-icon {
+	width: clamp(72px, 8vw, 112px);
+	height: clamp(72px, 8vw, 112px);
+	stroke-width: 0.8;
+	color: var(--golpe-black);
 }
 
 .category-tile__body {
 	display: flex;
-	flex-direction: column;
-	width: 100%;
-	padding: clamp(24px, 2.6vw, 40px);
-}
-
-.category-tile__num {
-	font-family: var(--golpe-font-display);
-	font-size: 12px;
-	letter-spacing: 0.2em;
-	opacity: 0.6;
-	margin-bottom: auto;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 20px 0 0;
+	border-bottom: 1px solid var(--golpe-black);
+	padding-bottom: 14px;
 }
 
 .category-tile__en {
 	font-family: var(--golpe-font-display);
-	font-size: 12px;
-	font-weight: 600;
-	letter-spacing: 0.28em;
-	opacity: 0.7;
-	margin-bottom: 8px;
+	font-size: clamp(18px, 1.7vw, 24px);
+	font-weight: 800;
+	letter-spacing: 0.08em;
 }
 
 .category-tile__name {
-	font-size: clamp(26px, 2.4vw, 36px);
-	font-weight: 800;
-	line-height: 1.2;
-	margin-bottom: 10px;
-}
-
-.category-tile__desc {
-	font-size: 14px;
-	opacity: 0.72;
-	margin-bottom: 24px;
-	max-width: 30ch;
-}
-
-.category-tile__cta {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	align-self: flex-start;
 	font-size: 13px;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	padding-bottom: 4px;
-	border-bottom: 1px solid currentColor;
-}
-
-.category-tile__cta .golpe-icon {
-	width: 16px;
-	height: 16px;
-	transition: transform 0.3s var(--golpe-ease);
-}
-
-.category-tile__link:hover .category-tile__cta .golpe-icon {
-	transform: translateX(4px);
+	color: var(--golpe-gray-700);
 }
 
 .category-tile__subs {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: 6px 16px;
 	list-style: none;
-	margin: 16px 0 0;
+	margin: 14px 0 0;
 	padding: 0;
 }
 
 .category-tile__subs a {
-	display: inline-block;
-	padding: 7px 16px;
-	border: 1px solid var(--golpe-gray-300);
 	font-size: 13px;
-	transition: all 0.2s var(--golpe-ease);
+	color: var(--golpe-gray-700);
 }
 
 .category-tile__subs a:hover {
-	background: var(--golpe-black);
-	border-color: var(--golpe-black);
-	color: var(--golpe-white);
+	color: var(--golpe-black);
+	text-decoration: underline;
+	text-underline-offset: 4px;
 }
 
 /* 7. 신상품 (상품이 없을 때) ---------------------------------------------- */
 .section--products {
 	padding-top: 0;
+}
+
+.product-placeholder-grid--2 {
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .product-placeholder-grid {
@@ -837,9 +723,7 @@ p {
 .product-placeholder__image {
 	display: block;
 	aspect-ratio: 4 / 5;
-	background: linear-gradient(110deg, var(--golpe-gray-100) 30%, #fafafa 50%, var(--golpe-gray-100) 70%);
-	background-size: 200% 100%;
-	animation: golpe-shimmer 2.4s linear infinite;
+	background: var(--golpe-gray-100);
 	margin-bottom: 16px;
 }
 
@@ -1282,14 +1166,6 @@ p {
 		display: none;
 	}
 
-	.category-tiles {
-		grid-template-columns: 1fr;
-	}
-
-	.category-tile__link {
-		aspect-ratio: 16 / 10;
-	}
-
 	.product-placeholder-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}
@@ -1319,21 +1195,51 @@ p {
 	}
 
 	.hero {
-		min-height: 78vh;
-		padding: 96px 0 120px;
+		min-height: 80vh;
+		padding: 120px 0 56px;
 	}
 
-	.hero__actions .button {
-		flex: 1 1 100%;
+	.hero__cta {
+		width: 100%;
 	}
 
-	.hero__scroll {
+	/* 기본 일러스트는 위쪽에만 배치해 글자와 겹치지 않게 합니다. (사진은 전체 배경 유지) */
+	.hero.has-illustration .hero__media {
+		bottom: 42%;
+	}
+
+	.hero.has-illustration .hero__image {
+		object-position: 72% center;
+	}
+
+	/* 모바일 카테고리: 가로 스크롤 + scroll-snap (다음 카드가 살짝 보이도록) */
+	.category-tiles {
+		display: flex;
+		gap: 12px;
+		margin: 0 calc(var(--golpe-gutter) * -1);
+		padding: 0 var(--golpe-gutter) 4px;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--golpe-gutter);
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	.category-tiles::-webkit-scrollbar {
 		display: none;
 	}
 
-	.category-tile__link {
-		aspect-ratio: 4 / 5;
+	.category-tiles:focus-visible {
+		outline: 2px solid var(--golpe-black);
+		outline-offset: -2px;
 	}
+
+	.category-tile {
+		flex: 0 0 78%;
+		scroll-snap-align: start;
+	}
+
 
 	.section-heading {
 		align-items: flex-start;
@@ -1840,4 +1746,349 @@ p {
 .agency-terms__item--return {
 	color: var(--golpe-ink);
 	font-weight: 600;
+}
+
+
+/* 15. 메인 디자인 — GOLPE EDIT · 해외구매대행 안내 · 하단 -------------------- */
+.golpe-edit {
+	padding-top: 0;
+}
+
+.golpe-edit__grid {
+	display: grid;
+	grid-template-columns: 5fr 7fr;
+	gap: clamp(24px, 3vw, 48px);
+	align-items: stretch;
+}
+
+.golpe-edit__feature {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	min-height: 520px;
+	overflow: hidden;
+	background: var(--golpe-black);
+	color: var(--golpe-white);
+	isolation: isolate;
+}
+
+.golpe-edit__feature:hover {
+	color: var(--golpe-white);
+}
+
+.golpe-edit__image {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.golpe-edit__feature.has-image::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: linear-gradient(0deg, rgba(17, 17, 17, 0.75) 0%, rgba(17, 17, 17, 0) 60%);
+}
+
+.golpe-edit__body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: clamp(28px, 3vw, 48px);
+}
+
+.golpe-edit__eyebrow {
+	font-size: 12px;
+	letter-spacing: 0.2em;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+.golpe-edit__title {
+	font-size: clamp(24px, 2.4vw, 34px);
+	font-weight: 800;
+	line-height: 1.3;
+}
+
+.golpe-edit__text {
+	max-width: 36ch;
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+.golpe-edit__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	align-self: flex-start;
+	margin-top: 12px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid currentColor;
+	font-family: var(--golpe-font-display);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+}
+
+.golpe-edit__cta .golpe-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.golpe-edit__products .woocommerce ul.products {
+	margin: 0;
+}
+
+/* 해외구매대행 안내 (배송 · 통관 · 반품) */
+.agency-intro {
+	background: var(--golpe-gray-100);
+	border-bottom: 0;
+}
+
+.agency-flow {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	list-style: none;
+	margin: 0 0 clamp(32px, 4vw, 48px);
+	padding: 0;
+	border-top: 1px solid var(--golpe-black);
+}
+
+.agency-flow__step {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	column-gap: 12px;
+	padding: 20px 16px 0 0;
+}
+
+.agency-flow__num {
+	grid-row: span 2;
+	font-family: var(--golpe-font-display);
+	font-size: 28px;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.agency-flow__en {
+	font-family: var(--golpe-font-display);
+	font-size: 11px;
+	letter-spacing: 0.22em;
+	color: var(--golpe-gray-500);
+}
+
+.agency-flow__title {
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.agency-cards {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: clamp(12px, 1.6vw, 24px);
+}
+
+.agency-card {
+	padding: clamp(28px, 3vw, 40px);
+	background: var(--golpe-white);
+}
+
+.agency-card > .golpe-icon {
+	width: 28px;
+	height: 28px;
+	margin-bottom: 20px;
+}
+
+.agency-card__en {
+	margin: 0 0 4px;
+	font-family: var(--golpe-font-display);
+	font-size: 11px;
+	letter-spacing: 0.22em;
+	color: var(--golpe-gray-500);
+}
+
+.agency-card__title {
+	font-size: 18px;
+	margin-bottom: 16px;
+}
+
+.agency-card__list {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 14px;
+	color: var(--golpe-gray-700);
+	line-height: 1.65;
+}
+
+.agency-card__list li {
+	position: relative;
+	padding-left: 14px;
+}
+
+.agency-card__list li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.75em;
+	width: 6px;
+	height: 1px;
+	background: var(--golpe-black);
+}
+
+.agency-intro__more {
+	margin-top: 32px;
+}
+
+/* 하단: 고객센터 · 사업자 정보 · 약관 */
+.footer-grid {
+	grid-template-columns: 1.3fr 0.9fr 1.2fr 1.6fr;
+}
+
+.footer-cs__phone {
+	margin: 0 0 6px;
+	font-family: var(--golpe-font-display);
+	font-size: 24px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	color: var(--golpe-white);
+}
+
+.footer-cs__meta {
+	margin: 0 0 4px;
+	font-size: 13px;
+}
+
+.footer-cs ul {
+	margin-top: 20px;
+}
+
+.footer-bottom {
+	flex-wrap: wrap;
+}
+
+.footer-legal {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 24px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+}
+
+.footer-legal__privacy {
+	font-weight: 700;
+	color: var(--golpe-white);
+}
+
+.footer-bottom .admin-note {
+	flex-basis: 100%;
+	margin: 0;
+}
+
+@media (max-width: 1024px) {
+	.golpe-edit__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.golpe-edit__feature {
+		min-height: 360px;
+	}
+
+	.agency-cards {
+		grid-template-columns: 1fr;
+	}
+
+	.footer-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (max-width: 640px) {
+	.agency-flow {
+		grid-template-columns: repeat(2, 1fr);
+		row-gap: 16px;
+	}
+
+	.golpe-edit__feature {
+		min-height: 300px;
+	}
+
+	.footer-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+/* 16. 카테고리 스크롤 힌트 · 모바일 여백 최종 점검 · 배너 관리자 안내 ------- */
+.category-scroll-hint {
+	display: none;
+	align-items: center;
+	justify-content: space-between;
+	margin: -8px 0 14px;
+	font-size: 12px;
+	color: var(--golpe-gray-500);
+}
+
+.category-scroll-hint span {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.category-scroll-hint .golpe-icon {
+	width: 14px;
+	height: 14px;
+}
+
+.category-scroll-hint__count {
+	font-family: var(--golpe-font-display);
+	letter-spacing: 0.12em;
+	color: var(--golpe-black);
+}
+
+.is-scrolled-end .category-scroll-hint .golpe-icon {
+	transform: scaleX(-1);
+}
+
+.hero__admin-note {
+	margin: 16px 0 0;
+	max-width: 520px;
+	font-size: 12px;
+}
+
+@media (max-width: 640px) {
+	:root {
+		--golpe-section: 72px;
+	}
+
+	.section-heading {
+		margin-bottom: 24px;
+	}
+
+	.agency-card {
+		padding: 24px;
+	}
+
+	.agency-flow {
+		margin-bottom: 24px;
+	}
+
+	.agency-intro__head {
+		margin-bottom: 32px;
+		gap: 16px;
+	}
+
+	.golpe-edit__products {
+		margin-top: 8px;
+	}
+
+	/* 위 기본 규칙(display: none)보다 뒤에 와야 모바일에서 보입니다. */
+	.category-scroll-hint {
+		display: flex;
+	}
 }

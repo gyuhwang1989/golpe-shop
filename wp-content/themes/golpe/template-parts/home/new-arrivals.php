@@ -27,7 +27,7 @@ if ( golpe_is_woocommerce_active() && function_exists( 'wc_get_products' ) ) {
 ?>
 <section class="section section--products" id="new-arrivals">
 	<div class="container">
-		<?php golpe_section_heading( 'NEW ARRIVALS', __( '신상품', 'golpe' ), $golpe_has_products ? golpe_shop_url() : '' ); ?>
+		<?php golpe_section_heading( __( '신상품', 'golpe' ), 'NEW ARRIVALS', $golpe_has_products ? golpe_shop_url() : '' ); ?>
 
 		<?php if ( $golpe_has_products ) : ?>
 			<?php echo do_shortcode( '[products limit="8" columns="4" orderby="date" order="DESC" visibility="visible"]' ); ?>

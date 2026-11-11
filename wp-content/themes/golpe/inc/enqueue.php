@@ -39,5 +39,19 @@ function golpe_enqueue_assets() {
 			'strategy'  => 'defer',
 		)
 	);
+
+	// 메인 페이지 전용 (모바일 카테고리 가로 스크롤 등).
+	if ( is_front_page() ) {
+		wp_enqueue_script(
+			'golpe-home',
+			GOLPE_URI . '/assets/js/home.js',
+			array(),
+			GOLPE_VERSION,
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'golpe_enqueue_assets' );
